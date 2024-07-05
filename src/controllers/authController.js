@@ -4,16 +4,14 @@ const User = require("../models/User");
 const Organisation = require("../models/Organisation");
 const UserOrganisation = require("../models/UserOrganisation");
 
-const JWT_SECRET = process.env.JWT_SECRET ;
+const JWT_SECRET = process.env.JWT_SECRET;
 
 const registerUser = async (req, res) => {
   const { firstName, lastName, email, password, phone } = req.body;
 
   try {
-    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create user
     const user = await User.create({
       firstName,
       lastName,
