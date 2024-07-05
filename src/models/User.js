@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../utils/database");
+const Organisation = require("./Organisation");
 
 const User = sequelize.define("User", {
   userId: {
@@ -29,6 +30,11 @@ const User = sequelize.define("User", {
   phone: {
     type: DataTypes.STRING,
   },
+});
+
+User.belongsToMany(Organisation, {
+  through: "UserOrganisation",
+  foreignKey: "userId",
 });
 
 module.exports = User;
