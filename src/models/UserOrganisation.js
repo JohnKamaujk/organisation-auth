@@ -22,5 +22,4 @@ const UserOrganisation = sequelize.define("UserOrganisation", {
   },
 });
 
-// Sync the model with the database, applying changes
-UserOrganisation.sync({ alter: true });
+module.exports = UserOrganisation;
