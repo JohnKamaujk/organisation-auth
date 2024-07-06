@@ -114,7 +114,7 @@ const addUserToOrganisation = async (req, res) => {
   const { orgId } = req.params;
   const { userId } = req.body;
 
-  const loggedInUserId = req.user;
+  const { userId: loggedInUserId } = req.user;
 
   try {
     // Check if the organisation exists
@@ -126,7 +126,7 @@ const addUserToOrganisation = async (req, res) => {
         statusCode: 404,
       });
     }
-
+    
     // Check if the logged-in user belongs to the organisation
     const userOrg = await UserOrganisation.findOne({
       where: { userId: loggedInUserId, orgId },
