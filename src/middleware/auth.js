@@ -13,7 +13,11 @@ const authenticateToken = (req, res, next) => {
     });
 
   jwt.verify(token, JWT_SECRET, (err, user) => {
-    if (err) return res.sendStatus(403);
+    if (err)
+      return res.status(401).json({
+        message: "not authorized",
+        statusCode: 401,
+      });
     req.user = user;
     next();
   });
