@@ -75,7 +75,42 @@ const getOrganisation = async (req, res) => {
   }
 };
 
+const createOrganisation = async (req, res) => {
+  const { name, description } = req.body;
+
+  try {
+    const { userId } = req.user;
+
+    const newOrganisation = await Organisation.create({
+      name,
+      description: description || "",
+    });
+
+    await UserOrganisation.create({
+      userId,
+      orgId: newOrganisation.orgId,
+    });
+
+    res.status(201).json({
+      status: "success",
+      message: "Organisation created successfully",
+      data: {
+        orgId: newOrganisation.orgId,
+        name: newOrganisation.name,
+        description: newOrganisation.description,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "error",
+      message: "Server error",
+      statusCode: 500,
+    });
+  }
+};
+
 module.exports = {
   getAllOrganisations,
   getOrganisation,
+  createOrganisation,
 };
