@@ -4,6 +4,6 @@ const { authenticateToken } = require("../middleware/auth");
 
 const router = express.Router();
 
-router.get("/api/users/:id", authenticateToken, getUserRecord);
+router.get("/users/:id", authenticateToken, getUserRecord);
 
 module.exports = router;

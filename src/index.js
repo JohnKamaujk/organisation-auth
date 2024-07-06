@@ -8,6 +8,7 @@ const User = require("./models/User");
 const Organisation = require("./models/Organisation");
 const UserOrganisation = require("./models/UserOrganisation");
 const authRoutes = require("./routes/authRoutes");
+const usersRoutes = require("./routes/usersRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -45,8 +46,9 @@ sequelize
     console.error("Unable to connect to the database:", err);
   });
 
-// Use the auth routes
+//  routes
 app.use("/auth", authRoutes);
+app.use("/api", usersRoutes)
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
