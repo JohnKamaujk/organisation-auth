@@ -37,7 +37,6 @@ const registerUser = async (req, res) => {
       expiresIn: "1h",
     });
 
-    // Return success response
     res.status(201).json({
       status: "success",
       message: "Registration successful",
@@ -62,6 +61,58 @@ const registerUser = async (req, res) => {
   }
 };
 
+const loginUser = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    // Check if user exists
+    const user = await User.findOne({ where: { email } });
+    if (!user) {
+      return res.status(401).json({
+        status: "Bad request",
+        message: "Authentication failed",
+        statusCode: 401,
+      });
+    }
+
+    // Verify password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({
+        status: "Bad request",
+        message: "Authentication failed",
+        statusCode: 401,
+      });
+    }
+
+    const accessToken = jwt.sign({ userId: user.userId }, JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    res.json({
+      status: "success",
+      message: "Login successful",
+      data: {
+        accessToken,
+        user: {
+          userId: user.userId,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          phone: user.phone || "",
+        },
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "error",
+      message: "Server error",
+      statusCode: 500,
+    });
+  }
+};
+
 module.exports = {
   registerUser,
+  loginUser,
 };
