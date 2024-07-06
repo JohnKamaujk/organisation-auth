@@ -49,8 +49,8 @@ sequelize
 
 //  routes
 app.use("/auth", authRoutes);
-app.use("/api", usersRoutes);
-app.use("/api", organisationsRoutes);
+app.use("/api/users", usersRoutes);
+app.use("/api/organisations", organisationsRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
