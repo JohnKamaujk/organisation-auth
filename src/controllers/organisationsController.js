@@ -1,6 +1,6 @@
 const { Op } = require("sequelize");
-const Organisation = require("../models/organisation");
-const UserOrganisation = require("../models/userOrganisation");
+const Organisation = require("../models/Organisation");
+const UserOrganisation = require("../models/UserOrganisation");
 
 const getAllOrganisations = async (req, res) => {
   try {
