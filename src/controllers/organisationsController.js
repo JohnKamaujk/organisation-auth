@@ -41,6 +41,41 @@ const getAllOrganisations = async (req, res) => {
   }
 };
 
+const getOrganisation = async (req, res) => {
+  const { orgId } = req.params;
+
+  try {
+    const organisation = await Organisation.findOne({
+      where: { orgId },
+    });
+
+    if (!organisation) {
+      return res.status(404).json({
+        status: "Not Found",
+        message: "Organisation not found",
+        statusCode: 404,
+      });
+    }
+
+    res.status(200).json({
+      status: "success",
+      message: "Organisation fetched successfully",
+      data: {
+        orgId: organisation.orgId,
+        name: organisation.name,
+        description: organisation.description,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "error",
+      message: "Server error",
+      statusCode: 500,
+    });
+  }
+};
+
 module.exports = {
   getAllOrganisations,
+  getOrganisation,
 };
