@@ -12,7 +12,7 @@ const usersRoutes = require("./routes/usersRoutes");
 const organisationsRoutes = require("./routes/organisationsRoutes");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -48,10 +48,17 @@ sequelize
   });
 
 //  routes
-app.use("/auth", authRoutes);
+app.use("/api/auth", authRoutes);
 app.use("/api/users", usersRoutes);
 app.use("/api/organisations", organisationsRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+if (require.main === module) {
+  // If the script is being run directly, start the server
+  app.listen(PORT, async () => {
+    console.log(`Server is running on port ${PORT}`);
+    await sequelize.sync();
+  });
+} else {
+  // If the script is required as a module, export the app
+  module.exports = app;
+}

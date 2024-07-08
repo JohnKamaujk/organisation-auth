@@ -44,8 +44,22 @@ const getAllOrganisations = async (req, res) => {
 
 const getOrganisation = async (req, res) => {
   const { orgId } = req.params;
+  const { userId } = req.user;
 
   try {
+    // Check if the user belongs to the organisation
+    const userOrganisation = await UserOrganisation.findOne({
+      where: { userId, orgId },
+    });
+
+    if (!userOrganisation) {
+      return res.status(403).json({
+        status: "Forbidden",
+        message: "You do not have access to this organisation",
+        statusCode: 403,
+      });
+    }
+    
     const organisation = await Organisation.findOne({
       where: { orgId },
     });
@@ -126,7 +140,7 @@ const addUserToOrganisation = async (req, res) => {
         statusCode: 404,
       });
     }
-    
+
     // Check if the logged-in user belongs to the organisation
     const userOrg = await UserOrganisation.findOne({
       where: { userId: loggedInUserId, orgId },
